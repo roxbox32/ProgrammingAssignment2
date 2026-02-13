@@ -1,0 +1,33 @@
+makeCacheMatrix <- function(x = matrix()) {
+  
+  # 'j' will store the cached inverse of matrix 'x'
+  # Initially NULL because inverse is not yet computed
+  j <- NULL
+  
+  # Function to set a new matrix
+  # When a new matrix is assigned, the cached inverse must be cleared
+  set <- function(y){
+    x <<- y        # Superassignment updates 'x' in parent environment
+    j <<- NULL     # Reset cached inverse since matrix changed
+  }
+  
+  # Function to retrieve the current matrix
+  get <- function() x
+  
+  # Function to store the computed inverse in cache
+  setInverse <- function(inverse) 
+    j <<- inverse  # Save inverse using superassignment
+  
+  # Function to retrieve cached inverse
+  # Returns NULL if inverse has not yet been computed
+  getInverse <- function() j 
+  
+  # Return a list of functions (closures)
+  # These functions share access to 'x' and 'j'
+  list(
+    set = set, 
+    get = get, 
+    setInverse = setInverse,  
+    getInverse = getInverse
+  )
+}
